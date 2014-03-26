@@ -4,9 +4,23 @@ struct-utils
 This is a collection of functions of general usefulness or importance for
 Matlab programming.  There are two groups of files:
 
-**utility** files - stored in the `util` directory - that I have created to
- fill holes in the standard Matlab library over the years. Currently
- includes the following:
+ - **utility** files - stored in the `util` directory - that I have created to
+ fill holes in the standard Matlab library over the years.
+
+ - **structure** extensions extend the Matlab struct class with several
+ methods that anyone would be happy to have. For the most part, these tools
+ are intended to make structures be more database-like, so some of them may
+ be outmoded by Matlab's [new data types].  [new data types]:
+ http://blogs.mathworks.com/loren/2013/09/10/introduction-to-the-new-matlab-data-types-in-r2013b/
+ These have two subtypes:
+	 1. methods, stored in the `util/@struct` directory
+	 1. tools, stored in the `util` directory.
+
+To "install," simply add the `util` directory to your Matlab path.
+
+Currently includes the following:
+
+### Utility Files###
 
  - `approx.m` -- Tests whether numbers are approximately equal, to a
    user-specified tolerance
@@ -24,12 +38,7 @@ Matlab programming.  There are two groups of files:
  - `uniques.m` -- return a list of unique values sorted to match their
    original order of appearance 
 
-**structure** extensions - stored in the `util/@struct` directory - extend
- the Matlab struct class with several methods that anyone would be happy to
- have. For the most part, these tools are intended to make structures be
- more database-like, so some of them may be outmoded by Matlab's
- [new data types].
- [new data types]: http://blogs.mathworks.com/loren/2013/09/10/introduction-to-the-new-matlab-data-types-in-r2013b/
+### Structure Extentions ###
 
 *Methods*
 
