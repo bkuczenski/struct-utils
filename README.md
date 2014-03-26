@@ -10,13 +10,12 @@ Matlab programming.  There are two groups of files:
  - **structure** extensions extend the Matlab struct class with several
  methods that anyone would be happy to have. For the most part, these tools
  are intended to make structures be more database-like, so some of them may
- be outmoded by Matlab's [new data types].
+ be outmoded by Matlab's [new data types].  These have two subtypes:
+
+    1. methods, stored in the `util/@struct` directory
+	1. tools, stored in the `util` directory.
 
 [new data types]: http://blogs.mathworks.com/loren/2013/09/10/introduction-to-the-new-matlab-data-types-in-r2013b/
-
-These have two subtypes:
-	 1. methods, stored in the `util/@struct` directory
-	 1. tools, stored in the `util` directory.
 
 To "install," simply add the `util` directory to your Matlab path.
 
