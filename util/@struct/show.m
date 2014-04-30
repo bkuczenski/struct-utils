@@ -168,7 +168,11 @@ for i=1:length(FN)
       k=k+1;
     end
     firstlook=D(k).(FN{i});
-    if isnumeric(firstlook)
+    if islogical(firstlook)
+      % cast to string
+      t_fmt{1}{3}='s';
+      D=moddata(D,FN{i},@logical2char);  
+    elseif isnumeric(firstlook)
       accumfmt(i)='a';
       if prod(size(firstlook))>1
         t_fmt{1}{3}='v'; % for vector
@@ -366,3 +370,9 @@ end
 function S=struct2char(v)
 S=sprintf('[ %d x %d struct ]',size(v,1),size(v,2));
 
+function S=logical2char(l)
+if l
+    S='X';
+else
+    S='';
+end
