@@ -246,7 +246,11 @@ for i=1:length(FN)
   if i==length(fmt) & i < length(FN)
     fmt{i+1}=fmt{i}; % continue last-supplied fmt
   end
-  fmt{i}=['%' t_fmt{1}{:} ];
+  if strcmp( delim, ',*' )
+      fmt{i}=['"%' t_fmt{1}{:} '"' ];
+  else
+      fmt{i}=['%' t_fmt{1}{:} ];
+  end
 end
 
 if length(fmt)>length(FN) fmt=fmt(1:length(FN)); end

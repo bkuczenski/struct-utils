@@ -74,8 +74,8 @@ for i=length(FieldNames):-1:1 % reverse order because we may drop fields
   else 
     FieldNames{i}( FieldNames{i}==' ' )=''; % remove spaces from retained fields
     FieldNames{i}( FieldNames{i}=='"' )=''; % remove quotes from retained fields
+    FieldNames{i}=tr(FieldNames{i},'-,.:;','_____');
   end
-  FieldNames{i}=tr(FieldNames{i},'-,.:;','_____');
 end
 %keyboard
 FN=[FieldNames;FieldNames];
@@ -92,7 +92,8 @@ while isempty(L) L=fgetl(fid); end
   
 while L~=-1
   NumRecords=NumRecords+1;
-  Data=regexp(L,delim,'split');
+  %Data=regexp(L,delim,'split');
+  Data=fractionate(L,delim); % quote-sensitive split
 
   % Data Format processing
   for i=length(Data):-1:1 % reverse order because we may drop fields
@@ -200,3 +201,31 @@ F=F(2:NRA+1); % get rid of header entry
 disp([num2str(NumRecords) ' records Processed ; ' ...
       num2str(length(F)) ' records Accepted.'])
 fclose(fid);
+
+function Data=fractionate(L,delim)
+% do it manually--- to accommodate quote-escaped CSV files
+Data={};
+while ~isempty(L)
+    mychar=L(1);
+    if strcmp(mychar,'"')
+        L(1)='';
+        nextdelim=min(findstr(L,'"'));
+        L(nextdelim)=''; % find and remove next matching quote
+    else
+        nextdelim=min(findstr(L,delim));
+        if isempty(nextdelim)
+            nextdelim=length(L)+1;
+        end
+    end
+    Data=[Data {L(1:nextdelim-1)}];
+    if nextdelim==length(L) % string ends in delim: trailing empty field
+        L='';
+        Data=[Data {''}];
+    else
+        L=L(nextdelim+1:end);
+    end
+end
+
+        
+        
+        
