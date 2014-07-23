@@ -151,11 +151,15 @@ for i=1:length(FN)
   myhwidth=length(FN{i});
   if isempty(regexp(myfmt,'^%')) myfmt=['%' myfmt]; end
   % regex for fprintf format string is: '%0?[+-]?[0-9\.]*[bcdeEfgGiostuxX]{1,2}'
-  fpf='^%([#0\ _+-]*)([0-9\.]*)([bcdeEfgGiostuxX]{1,2})';
+  fpf='^%([#0\ _+-]*)([0-9\.]*)([bcdeEfgGliostuxX]{1,2})';
   t_fmt=regexp(myfmt,fpf,'tokens'); % {1} - prefix {2} - width {3} char
   if strcmp(myfmt,'%v') % handle explicit vector
     t_fmt{1}={'','','v'};
     accumfmt(i)='d';
+  elseif strcmp(myfmt,'%l') % logical
+      % cast to string
+      t_fmt{1}={'','','s'};
+      D=moddata(D,FN{i},@logical2char);  
   elseif isempty(t_fmt)
     disp([' ! Field ' FN{i} ': Invalid format string: ' myfmt])
     myfmt=ifinput('   Enter new format: ','%s','s');
@@ -326,7 +330,7 @@ for i=1:length(FN)
   myfmt=fmt{min([length(fmt),i])};
   if isempty(regexp(myfmt,'^%')) myfmt=['%' myfmt]; end
   % regex for fprintf format string is: '%0?[+-]?[0-9\.]*[bcdeEfgGiostuxX]{1,2}'
-  fpf='^%([#0\ +-_]*)([0-9\.]*)([bcdeEfgGiostuvxX]{1,2})';
+  fpf='^%([#0\ +-_]*)([0-9\.]*)([bcdeEfgGilostuvxX]{1,2})';
   t_fmt=regexp(myfmt,fpf,'tokens'); % {1} - prefix {2} - width {3} char
   if isempty(t_fmt)
     disp([' ! Field ' FN{i} ': Invalid format string: ' myfmt])
@@ -335,6 +339,9 @@ for i=1:length(FN)
   end
   if strcmp(t_fmt{1}{2},'v') % vec
     S=moddata(S,FN{i},@vec2char);
+    t_fmt{1}{2}='s';
+  elseif strcmp(t_fmt{1}{2},'l') % logical
+    S=moddata(S,FN{i},@logical2char);
     t_fmt{1}{2}='s';
   end
 
