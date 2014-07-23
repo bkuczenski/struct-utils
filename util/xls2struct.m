@@ -4,6 +4,8 @@ function S=xls2struct(xlsfile,worksheet,fmt)
 % contain valid matlab structure field names (e.g. [A-Za-z][_A-Za-z0-9]*) fmt is a
 % cell array of format specifiers, each corresponding to one column of data.
 %
+% An empty column header will halt field name scanning.
+%
 % Currently supported format specifiers are:
 %  'n' - numeric data
 %  'ND' - numeric data, replacing the string 'ND' with NaN
@@ -17,7 +19,11 @@ function S=xls2struct(xlsfile,worksheet,fmt)
 [~,~,C]=xlsread(xlsfile,worksheet);
 C=ccrop(C);
 
-FN=tr(C(1,:),' ()/-#','_____N');
+FN=C(1,:);
+FN=FN(~cumsum(cisnan(FN))); % some genius move to drop all fields after the first
+                            % empty header 
+
+FN=tr(FN,' ()/-#','_____N');
 Dat=C(2:end,:);
 
 % identify valid columns manually
