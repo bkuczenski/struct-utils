@@ -26,4 +26,3 @@ for i=1:length(fields)
   O=[O find(strcmp(fields{i},FN))];
 end
 S=orderfields(S,O);
-

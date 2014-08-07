@@ -82,7 +82,7 @@ for i=1:length(D)
       end
     end
     % did we pass?
-    if isempty(result) | ~result 
+    if isempty(result) || ~any(result)
       if ~filt(1).Or % 
         break;
       end
@@ -95,5 +95,5 @@ end
 if filt(1).Or
   Ds=D(any(M,2));
 else
-  Ds=D(M(:,end));
+  Ds=D(all(M,2));
 end
