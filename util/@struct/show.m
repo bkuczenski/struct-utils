@@ -186,7 +186,7 @@ for i=1:length(FN)
         
         if fix(secondlook)==secondlook & fix(firstlook)==firstlook %&firstlook>0 
           t_fmt{1}{3}='d';
-        else t_fmt{1}{3}='f';
+        else t_fmt{1}{3}='g';
         end
       end
     else
@@ -207,11 +207,16 @@ for i=1:length(FN)
   elseif isempty(t_fmt{1}{2}) % no field width supplied - figure it out ourselves
     switch t_fmt{1}{3}(1)
       case {'b','d','i','o','t','u','x','X'} % integer
-        maxsize=max([myhwidth,1+ceil(log10(max(abs([D(~ ...
-                                                      isinf([D.(FN{i})])).(FN{i})]))))]);
-        width(i)=maxsize;
-        t_fmt{1}{2}=num2str(maxsize);
-        hdr_fmt{i}=['%-' num2str(maxsize) 's'];
+        try
+            mx=max([myhwidth,...
+                    1+ceil(log10(max(abs([D(~isinf([D.(FN{i})])).(FN{i})]))))]);
+        catch
+            fprintf('Numeric field width determination failed\n')
+            keyboard
+        end
+        width(i)=mx;
+        t_fmt{1}{2}=num2str(mx);
+        hdr_fmt{i}=['%-' num2str(mx) 's'];
         accumfmt(i)='a';
       case {'e','E','f','g','G'} % float
         % TODO- figure out how to incorporate myhwidth
