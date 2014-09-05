@@ -176,6 +176,9 @@ for i=1:length(FN)
       % cast to string
       t_fmt{1}{3}='s';
       D=moddata(D,FN{i},@logical2char);  
+    elseif iscell(firstlook)
+        t_fmt{1}{3}='s';
+        D=moddata(D,FN{i},@cell2char);
     elseif isnumeric(firstlook)
       accumfmt(i)='a';
       if prod(size(firstlook))>1
@@ -391,4 +394,11 @@ if l
     S='X';
 else
     S='';
+end
+
+function S=cell2char(v)
+if prod(size(v)) < 3
+  S=['{ ' sprintf('%.3g ',v{:}) '}'];
+else
+  S=sprintf('{ %d x %d array}',size(v,1),size(v,2));
 end
