@@ -15,6 +15,12 @@ if ~all(isfield(S2,FN))
   L=false;
   return
 end
+if length(S1)~=length(S2)
+    fprintf('Structure arrays have different lengths S1=%d; S2=%d\n',length(S1), ...
+            length(S2))
+    L=false;
+    return
+end
 
 for i=1:length(FN)
     try
@@ -26,10 +32,11 @@ for i=1:length(FN)
   if ~all(fieldchk)
       L=false;
       if verbose
-      fprintf('Structures differ on field %s: records ',FN{i})
-      d=find(~fieldchk);
-      fprintf('%d ',d);
-      fprintf('\n')
+          fprintf('Structures differ on field %s: records ',FN{i})
+          d=find(~fieldchk);
+          fprintf('%d ',d);
+      
+          fprintf('\n')
       else
           return
       end
