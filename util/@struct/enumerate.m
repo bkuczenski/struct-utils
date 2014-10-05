@@ -10,5 +10,7 @@ if nargin==1
 end
 FN=fieldnames(S);
 q=num2cell(1:length(S));
-[S.(arg)]=deal(q{:});
-S=select(S,{arg FN{:}});
+if ~isempty(S)
+  [S.(arg)]=deal(q{:});
+  S=select(S,{arg FN{:}});
+end

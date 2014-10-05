@@ -185,9 +185,9 @@ for i=1:length(FN)
         t_fmt{1}{3}='v'; % for vector
         accumfmt(i)='d';
       else
-        secondlook=D(max([1 min(find([D.(FN{i})]>0))])).(FN{i});
-        
-        if fix(secondlook)==secondlook & fix(firstlook)==firstlook %&firstlook>0 
+        secondlook=sum([D.(FN{i})]);
+
+        if fix(secondlook)==secondlook
           t_fmt{1}{3}='d';
         else t_fmt{1}{3}='g';
         end
@@ -276,6 +276,8 @@ end
 delim{end}='';
 myfmt=[fmt;delim];
 myhdr=[hdr_fmt;delim];
+% some serious fu going on here
+blanks=regexp(sprintf('%%%d.%dsQ',[width width]'),'Q','split');
 
 if bitand(cont,2)==0
   fprintf(fid,[myhdr{:} NEWLINE],FN{:});
@@ -291,7 +293,11 @@ for i=1:length(D)
   for j=1:length(format_hack)
       mydat{format_hack(j)}=struct2char(mydat{format_hack(j)});
   end
-  fprintf(fid,[myfmt{:} NEWLINE],mydat{:});
+  % print data, correcting for nulls
+  showfmt=myfmt;
+  nulls=cellfun(@isempty,mydat);
+  showfmt(1,nulls)=blanks(nulls);
+  fprintf(fid,[showfmt{:} NEWLINE],mydat{:});
 end
 if length(D)>40 & bitand(cont,1)==0
   % print another header line at the bottom
