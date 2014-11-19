@@ -39,4 +39,4 @@ end
 if transp S=S'; end
 
 % remove trailing delimiters
-S=moddata(S,'UUID',@(x) regexprep(x,[delim '$'],''));
+S=moddata(S,EF,@(x) regexprep(x,[delim '$'],''));
