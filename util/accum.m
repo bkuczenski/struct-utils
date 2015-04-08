@@ -216,10 +216,17 @@ for i=1:size(C,1)
   for j=1:nc
     d{n,1+na+j}=[d{n,1+na+j} C{i,ConcatCols(j)} pre{3}];
   end
-  d{n,end}=d{n,end}+1;
+  d{n,end}=d{n,end}+1; % increment counter
   if mod(i,1000)==0
     disp([num2str(i) ' records Processed '])
   end
+end
+
+% remove trailing delimiters from concat fields
+if ischar(pre{3})
+    for j=1:nc
+        d(:,1+na+j)=regexprep(d(:,1+na+j),[pre{3} '$'],'');
+    end
 end
 
 % now re-break-up the match field
