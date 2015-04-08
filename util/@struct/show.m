@@ -295,8 +295,10 @@ for i=1:length(D)
   end
   % print data, correcting for nulls
   showfmt=myfmt;
-  nulls=cellfun(@isempty,mydat);
-  showfmt(1,nulls)=blanks(nulls);
+  if nofile
+    nulls=cellfun(@isempty,mydat);
+    showfmt(1,nulls)=blanks(nulls);
+  end
   fprintf(fid,[showfmt{:} NEWLINE],mydat{:});
 end
 if length(D)>40 & bitand(cont,1)==0
